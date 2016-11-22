@@ -1,18 +1,23 @@
+//library & framework import
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
 import javax.swing.*;
+//implements key event listener
 public class Java2048 implements KeyListener,ActionListener {
-	boolean upMovable = true,downMovable = true	,rightMovable = true,leftMovable =true;
+	//declare constructor
+	boolean upMovable = true, downMovable = true, rightMovable = true, leftMovable =true;
 	JDialog dialog;
 	JFrame frame;
 	JLabel label[] = new JLabel[16];
 	JPanel panel[] = new JPanel[16];
 	Random rand = new Random();
-
+	//main class
 	public static void main(String[] args) {
+		//Runnable interface implementation. If not have return value, use this.
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				//exception process
 				try {
 					new Java2048();
 				} catch (Exception e) {
@@ -21,21 +26,23 @@ public class Java2048 implements KeyListener,ActionListener {
 			}
 		});
 	}
+	//start main
 	public Java2048() {
 		System.out.println("Start Game 2048");
+		//create frame
 		frame = new JFrame("2048");
 		Font font = new Font("돋움", Font.PLAIN, 40);
-		frame.setSize(565, 580);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-		frame.setLayout(null);
-		frame.setResizable(false);
+		frame.setSize(565, 580);//set window size
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//set window x-button
+		frame.setLocationRelativeTo(null);//set absolute location
+		frame.setVisible(true);//check showable
+		frame.setLayout(null);//set layout
+		frame.setResizable(false);//window size unchangeable
 		frame.addKeyListener(this);
-
+		//2048 board container
 		Container container = frame.getContentPane();
 		container.setBackground(new Color(173, 157, 142));
-
+		//create label & panel
 		for(int i = 0; i < 16; i++) {
 			label[i] = new JLabel("");
 			panel[i] = new JPanel();
@@ -44,11 +51,12 @@ public class Java2048 implements KeyListener,ActionListener {
 			panel[i].setBackground(new Color(255,255,255));
 			frame.add(panel[i]);
 		}
+		//location
 		panel[0].setBounds(15 , 15, 120, 120);
 		panel[1].setBounds(150, 15, 120, 120);
 		panel[2].setBounds(285, 15, 120, 120);
 		panel[3].setBounds(420, 15, 120, 120);
-		
+
 		panel[4].setBounds(15 , 150, 120, 120);
 		panel[5].setBounds(150, 150, 120, 120);
 		panel[6].setBounds(285, 150, 120, 120);
@@ -68,7 +76,7 @@ public class Java2048 implements KeyListener,ActionListener {
 			label[i].setFont(font);
 			panel[i].add(label[i]);
 		}
-
+		//Random location
 		int i = rand.nextInt(16);
 		int j;
 		label[i].setText("2");
@@ -78,7 +86,7 @@ public class Java2048 implements KeyListener,ActionListener {
 		} while(i==j);
 		label[j].setText("2");
 		colorTiles();
-		
+		//game over label
 		JButton button;
 		dialog = new JDialog(frame,"Game Over",true);
 		dialog.setLayout(new GridBagLayout());
@@ -91,7 +99,7 @@ public class Java2048 implements KeyListener,ActionListener {
 		dialog.add(button);
 		button.addActionListener(this);
 	}
-
+	//key event
 	@Override
 	public void keyPressed(KeyEvent event) {
 		if(event.getKeyCode() == KeyEvent.VK_UP && upMovable == true){
@@ -118,13 +126,13 @@ public class Java2048 implements KeyListener,ActionListener {
 			dialog.setVisible(true);
 		}
 	}
-
+	//move exception
 	private void movable() {
 		upMovable = false;
 		downMovable = false;
 		rightMovable = false;
 		leftMovable = false;
-		//to know about right move
+		//right move 
 		int fir,sec;
 		x:{ 
 			for(int i = 3; i <= 15; i = i+4) {
@@ -158,7 +166,7 @@ public class Java2048 implements KeyListener,ActionListener {
 				}
 			}
 		}
-		//to know about left move
+		//left move
 		y:{ 
 			for(int i = 0; i <= 12; i = i+4) {
 				for(int k = 3; k > 0; k--) {
@@ -191,7 +199,7 @@ public class Java2048 implements KeyListener,ActionListener {
 				}
 			}
 		}
-		//to know about down move
+		//down move
 		z:{ 
 			for(int i = 12; i <= 15; i++) {
 				for(int k = 12; k > 0; k = k-4) {
@@ -224,7 +232,7 @@ public class Java2048 implements KeyListener,ActionListener {
 				}
 			}
 		}
-		//to know about up move
+		//up move
 		u:{ 
 			for(int i = 0; i <= 3; i++) {
 				for(int k = 12; k > 0; k = k-4) {
@@ -258,7 +266,7 @@ public class Java2048 implements KeyListener,ActionListener {
 			}
 		}
 	}
-
+	//turn
 	private void next() {
 		boolean flag = false;
 		int i;
@@ -281,12 +289,14 @@ public class Java2048 implements KeyListener,ActionListener {
 			dialog.setVisible(true);
 		}
 	}
+	//new game event
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getActionCommand() == "ok") {
-			initialize(); dialog.setVisible(false);
+			initialize(); 
+			dialog.setVisible(false);
 		}
 	}
-
+	//
 	private void initialize() {
 		leftMovable =true;
 		rightMovable=true;
@@ -306,11 +316,11 @@ public class Java2048 implements KeyListener,ActionListener {
 		label[j].setText("2");
 		colorTiles();
 	}
+	//right move event
 	private void rightMove() {
 		int fir, sec, fin;
 		for(int i = 3; i <= 15; i = i+4) {
 			rightify(i);
-//code to add consecutive same terms
 			for(int j = i; j > i - 3; j--) {
 				if(label[j].getText() == "") {
 					fir = 0;
@@ -335,9 +345,8 @@ public class Java2048 implements KeyListener,ActionListener {
 			rightify(i);
 		}
 	}
-
+	//
 	private void rightify(int i) {
-//code to righify
 		for(int k = 3; k > 0; k--) {
 			for(int l = i; l > i - k; l--) {
 				if(label[l].getText() == "") {
@@ -349,13 +358,11 @@ public class Java2048 implements KeyListener,ActionListener {
 			}
 		}
 	}
-
+	//left move event
 	private void leftMove() {
 		int fir,sec,fin;
-
 		for(int i = 0; i <= 12; i = i+4) {
 			leftify(i);
-//code to add consecutive same terms
 			for(int j = i; j < i + 3; j++) {
 				if(label[j].getText() == ""){
 					fir = 0;
@@ -380,8 +387,8 @@ public class Java2048 implements KeyListener,ActionListener {
 			leftify(i);
 		}
 	}
+	//
 	private void leftify(int i) {
-//code to leftify
 		for(int k = 3; k > 0; k--) {
 			for(int l = i; l < i + k; l++) {
 				if(label[l].getText() == "") {
@@ -393,12 +400,11 @@ public class Java2048 implements KeyListener,ActionListener {
 			}
 		}
 	}
-
+	//down move event
 	private void downMove() {
 		int fir,sec,fin;
 		for(int i = 12; i <= 15; i++) {
 			downify(i);
-//code to add consecutive same terms
 			for(int j = i; j > i - 12; j = j-4) {
 				if(label[j].getText() == ""){
 					fir = 0;
@@ -423,9 +429,8 @@ public class Java2048 implements KeyListener,ActionListener {
 			downify(i);
 		}
 	}
-
+	//
 	private void downify(int i) {
-//code to downify
 		for(int k = 12; k > 0; k = k-4) {
 			for(int l = i; l > i - k; l = l-4) {
 				if(label[l].getText() == "") {
@@ -437,13 +442,11 @@ public class Java2048 implements KeyListener,ActionListener {
 			}
 		}
 	}
-
+	//up move event
 	private void upMove() {
 		int fir, sec, fin;
-
 		for(int i = 0; i <= 3; i++) {
 			upify(i);
-//code to add consecutive same terms
 			for(int j = i; j < i + 12; j = j+4) {
 				if(label[j].getText() == "") {
 					fir = 0;
@@ -468,9 +471,8 @@ public class Java2048 implements KeyListener,ActionListener {
 			upify(i);
 		}
 	}
-
+	//
 	private void upify(int i) {
-//code to upify
 		for(int k = 12; k > 0; k = k-4) {
 			for(int l = i; l < i + k; l = l+4) {
 				if(label[l].getText() == "") {
@@ -482,7 +484,7 @@ public class Java2048 implements KeyListener,ActionListener {
 			}
 		}
 	}
-
+	//key event
 	@Override
 	public void keyReleased(KeyEvent event) {}
 	@Override

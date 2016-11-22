@@ -1,7 +1,5 @@
 //library & framework import
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -32,54 +30,60 @@ public class Main {
 	//start main board
 	private void CreateBoard() {
 		//Implementation board frame
-		frame = new JFrame();
+		frame = new JFrame("2048");
 		System.out.println("Set Main Board");
 		frame.getContentPane().setBackground(new Color(249, 247, 234));
-		frame.getContentPane().setFont(new Font("돋움", Font.BOLD, 11));
-		java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();//screen size parser
+		frame.getContentPane().setFont(new Font("돋움", Font.BOLD, 12));
+		//screen size parser
+		java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setBounds((screenSize.width-600)/2, (screenSize.height-400)/2, 600, 600);
 		frame.getContentPane().setLayout(null);
-		//tutorial button
-		JButton btnNewButton = new JButton("Tutorial");
-		btnNewButton.setFont(new Font("Castellar", Font.BOLD, 15));
-		//event listener
-		btnNewButton.addActionListener(new ActionListener() {
+		//create explanation button
+		JButton btnExplanation = new JButton("Explanation");
+		btnExplanation.setFont(new Font("돋움", Font.BOLD, 30));
+		//event listener. If click this button, show explanation dialog
+		btnExplanation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				JOptionPane.showMessageDialog(null, "Hello player, this is a 2048 tutorial.\n"
+				JOptionPane.showMessageDialog(null, "Hello player, this is a 2048 explanation.\n"
 					+ "\n\njust in case you didn't know how to play.\n"
 					+ "\n1. Use your arrow keys to move the tiles.\n"
 					+ "\n2. If you click right-arrow-key, tiles move to down\n"
-					+ "\n3. \n"
-					+ "\n4. When two tiles with the same number touch, the merge into one!\n"
-					+ "\n"
+					+ "\n3. When two tiles with the same number touch, the merge into one!\n"
+					+ "\n\nCreate on : 2016. 11. 23\n"
+					+ "\nAuthor : youben Go\n "
 				);
 			}
 		});
-		btnNewButton.setBounds(50, 400, 200, 150);
-		frame.getContentPane().add(btnNewButton);
-
+		//locate explanation button 
+		btnExplanation.setBounds(50, 400, 200, 150);
+		frame.getContentPane().add(btnExplanation);
+		//create exit button
 		JButton btnExit = new JButton("Exit");
-		btnExit.setFont(new Font("Castellar", Font.BOLD, 15));
+		btnExit.setFont(new Font("Castellar", Font.BOLD, 30));
+		//event listener. If click this button, exit java program
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				System.out.println("System exit");
-				System.exit(0);
+				System.exit(0); //exit command
 			}
 		});
+		//locate exit button
 		btnExit.setBounds(350, 400, 200, 150);
 		btnExit.setBackground(new Color(249, 247, 234));
-		
 		frame.getContentPane().add(btnExit);
-		
-		
-		JButton btn2048 = new JButton("2048");
-		btn2048.setFont(new Font("Castellar", Font.BOLD, 40));
+		//create game start button
+		JButton btn2048 = new JButton("Start 2048");
+		btn2048.setFont(new Font("Castellar", Font.BOLD, 70));
+		//event listener. If click this button, show 2048 and dispose main
 		btn2048.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				//game start!
 				new Java2048();
+				//exit main window
 				frame.dispose();
 			}
 		});
+		//locate game start button
 		btn2048.setBounds(50, 50, 500, 300);
 		frame.getContentPane().add(btn2048);
 	}
